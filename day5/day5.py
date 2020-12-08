@@ -24,6 +24,18 @@ def solve(input):
         row = dichot(row_code, 127, "F")
         column = dichot(column_code, 7, "L")
         lst_res.append(row * 8 + column)
-    return max(lst_res)
+    return lst_res
 
-print(solve(input))
+def get_seat(seats):
+    seats = sorted(solve(input))
+    for seat in range(len(seats)):
+        if seat != len(seats) -1 :
+            if seats[seat] != seats[seat+1]-1:
+                return seat+1+seats[0]
+
+
+#max_seat = max(solve(input))
+print(get_seat(solve(input)))
+
+
+
