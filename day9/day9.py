@@ -14,10 +14,20 @@ def is_sum_previous_numbers(input, nb):
     return False
 
 
-def solve(input, preamble):
+def get_invalid_number(input, preamble):
     for i in range(preamble, len(input)):
         if not is_sum_previous_numbers(input[i-preamble:i], input[i]):
-            return input[i]
+            return input[i], i
     return False
 
-print(solve(input, 25))
+def solve2(input):
+    sum_numbers = []
+    invalid_number, index = get_invalid_number(input, 25)
+    for i in range(0,index):
+        sum_numbers.append(input[i])
+        while sum(sum_numbers) > invalid_number:
+            sum_numbers.pop(0)
+        if sum(sum_numbers) == invalid_number:
+            return min(sum_numbers) + max(sum_numbers)
+
+print(solve2(input))
