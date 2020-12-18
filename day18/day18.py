@@ -2,9 +2,49 @@ with open("input_day18.txt", "r") as myfile:
     input = myfile.read().split("\n")
 
 
+# PART2 -- adds parenthesis around "+" elements
+def add_priority(line):
+    line2 = line[:]
+    appended = 0
+    nxt_app = []
+    for c in range(len(line)):
+        if nxt_app:
+            if c+appended == min(nxt_app):
+                appended += 1
+                nxt_app.remove(min(nxt_app))
+        if line[c] == "+":
+            cpt = 0
+            c2 = c-1+appended
+            while not line2[c2].isnumeric() or cpt != 0:
+                if line2[c2] == ")":
+                    cpt += 1
+                elif line2[c2] == "(":
+                    cpt -=1
+                    if cpt == 0:
+                        break
+                c2 -= 1
+            line2 = line2[:c2] + "(" + line2[c2:]
+            appended += 1
+            c2 = c+1+appended
+            while not line2[c2].isnumeric() or cpt != 0:
+                if line2[c2] == "(":
+                    cpt += 1
+                elif line2[c2] == ")":
+                    cpt -=1
+                    if cpt == 0:
+                        break
+                c2 += 1
+            line2 = line2[:c2+1] + ")" + line2[c2+1:]
+            nxt_app = [i+2 for i in nxt_app]
+            nxt_app.append(c2+1)
+    return line2
+
+
 def solve_line(line):
-    print(line)
     line = line.replace(" ", "")
+    ##PART2 v
+    line = add_priority(line)
+    ##PART2 ^
     res = [0]
     cpt = 0
     operation = ["+"]
